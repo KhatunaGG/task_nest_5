@@ -13,12 +13,12 @@ export class CreateUserDto {
   name: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  @Min(16)
-  @Max(90)
-  age: number;
-
-  @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(10)
+  @Max(80)
+  age: number;
 }

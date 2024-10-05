@@ -1,65 +1,26 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Expense } from './schema/expenses.schema';
-import { Model } from 'mongoose';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ExpensesService {
-  constructor(
-    @InjectModel(Expense.name) private expenseModel: Model<Expense>,
-    private userService: UsersService,
-  ) {}
-
-
-
-  // async create(createExpenseDto: CreateExpenseDto, user: string) {
-  //   const newExpense = await this.expenseModel.create({
-  //     ...createExpenseDto,
-  //     user,
-  //   });
-  //   return newExpense;
-  // }
-
-
-  async create(createExpenseDto: CreateExpenseDto, user: string) {
-    const newExpense = await this.expenseModel.create({
-      ...createExpenseDto,
-      user,
-    });
-    await this.userService.addUsersExpenses(user, newExpense._id)
-    return newExpense;
+  create(createExpenseDto: CreateExpenseDto) {
+    return 'This action adds a new expense';
   }
-
-
 
   findAll() {
-    return this.expenseModel.find();
+    return `This action returns all expenses`;
   }
 
-  findOne(id: string) {
-    return this.expenseModel.findById(id).populate('user');
+  findOne(id: number) {
+    return `This action returns a #${id} expense`;
   }
 
-  async update(id: string, updateExpenseDto: UpdateExpenseDto) {
-    const expense = await this.expenseModel.findById(id);
-    if (!expense) throw new NotFoundException();
-    const updatedExpense = await this.expenseModel.findByIdAndUpdate(
-      id,
-      updateExpenseDto,
-      { new: true },
-    );
-    return updatedExpense;
+  update(id: number, updateExpenseDto: UpdateExpenseDto) {
+    return `This action updates a #${id} expense`;
   }
 
-  async remove(id: string) {
-    const expense = await this.expenseModel.findById(id);
-    if (!expense) throw new NotFoundException();
-    const deletedExpense = await this.expenseModel.findByIdAndDelete(id);
-    return deletedExpense;
+  remove(id: number) {
+    return `This action removes a #${id} expense`;
   }
-
-
 }
